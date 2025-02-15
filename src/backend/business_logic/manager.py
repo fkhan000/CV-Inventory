@@ -56,14 +56,20 @@ class Manager(Generic[T]):
 
     @session_management
     def fetch(self, session, **filters) -> T:
-        conditions = [getattr(self.model, key) == value for key, value in filters.items()]
-        result = session.query(self.model).filter(*conditions).one_or_none()
+        conditions = [
+            getattr(self.model, key).in_(value) if isinstance(value, list) else getattr(self.model, key) == value
+            for key, value in filters.items()
+            ]
+        result = session.query(self.model).filter(*conditions).all()
         
         if result is None:
             raise Exception(
                 f"No record found in {self.model.__name__} with {filters}",
                 self.error_codes[f"{self.model.__name__}NotFound"]
             )
+        if isinstance(result, list):
+            result = [object_as_dict(re) for re in result]
+            return result
         return object_as_dict(result)
     
     @session_management

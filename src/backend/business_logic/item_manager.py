@@ -1,7 +1,7 @@
 from typing import Dict, Any
 from database.models import Item
 from manager import Manager
-from pymilvus import MilvusClient
+from pymilvus import MilvusClient, Collection
 from services.embedding_model import EmbeddingModel
 from datetime import datetime, timezone
 
@@ -34,8 +34,9 @@ class ItemManager(Manager):
         
         self.vdb_client.upsert("items", vector_fields)
     
-    def similarity_search(self, query: str, num_neighbors, modality) -> Dict[str, Any]:
+    def similarity_search(self, query: str, user_id, offset, num_neighbors, modality) -> Dict[str, Any]:
         search_params = {"metric_type": self.params["metric_type"], "params": {}}
+        collection = Collection("Image")
 
         if modality == "image":
             query_vector = self.embedding_model.embed_image(query)
@@ -44,12 +45,14 @@ class ItemManager(Manager):
             query_vector = self.embedding_model.embed_text(query)
             anns_field = "text_embedding"
 
-        res = self.vdb_client.search("items", 
-                                     data=[query_vector],
-                                     anns_field=anns_field,
-                                     limit=int(num_neighbors),
-                                     param=search_params)[0]
-        res = [re.id for re in res]
+        res = collection.search(
+                                data=[query_vector],
+                                anns_field=anns_field,
+                                expr=f"user_id == {user_id}",
+                                limit=num_neighbors,
+                                offset=offset,
+                                param=search_params)[0]
+        res = [re.item_id for re in res]
         return res
 
     @Manager.session_management
