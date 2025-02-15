@@ -1,0 +1,29 @@
+{
+    "items": {
+        "description": "Collection for storing item information, including image and text embeddings.",
+        "field_args": [
+            {
+                "name": "id",
+                "dtype": "int64",
+                "is_primary": true
+            },
+            {
+                "name": "timestamp",
+                "dtype": "timestamp",
+                "is_primary": false
+            },
+            {
+                "name": "image_embedding",
+                "dtype": "float_vector",
+                "is_primary": false,
+                "dim": 1024
+            },
+            {
+                "name": "text_embedding",
+                "dtype": "float_vector",
+                "is_primary": false,
+                "dim": 1024
+            }
+        ]
+    }
+}
