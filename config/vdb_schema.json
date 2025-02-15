@@ -3,13 +3,18 @@
         "description": "Collection for storing item information, including image and text embeddings.",
         "field_args": [
             {
-                "name": "id",
+                "name": "item_id",
                 "dtype": "int64",
                 "is_primary": true
             },
             {
                 "name": "timestamp",
                 "dtype": "timestamp",
+                "is_primary": false
+            },
+            {
+                "name": "inventory_id",
+                "dtype": "int64",
                 "is_primary": false
             },
             {

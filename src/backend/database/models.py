@@ -45,7 +45,7 @@ class Inventory(Base):
     description = Column(String, default="", nullable=False)
     #TODO: Add default inventory image of a drawer
     image_url = Column(String, nullable=False, default="")
-    created_at = Column(TIMESTAMP, default=func.now(), nullable=False)
+    timestamp = Column(TIMESTAMP, default=func.now(), nullable=False)
 
     user = relationship("User", back_populates="inventories")
     items = relationship("Item", back_populates="inventory", cascade="all, delete")
@@ -67,7 +67,7 @@ class Item(Base):
     description = Column(String, default="", nullable=False)
     #TODO: Add default ? image in rare case we don't have image of the item
     image_url = Column(String, nullable=False, default="default_item_image.png")
-    created_at = Column(TIMESTAMP, default=func.now(), nullable=False)
+    timestamp = Column(TIMESTAMP, default=func.now(), nullable=False)
 
     inventory = relationship("Inventory", back_populates="items")
     tags = relationship("Tag", secondary="itemtag", back_populates="items")
