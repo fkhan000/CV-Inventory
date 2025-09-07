@@ -3,9 +3,9 @@ from flask_cors import cross_origin
 from business_logic.item_manager import ItemManager
 from business_logic.item_tag_manager import ItemTagManager
 
-def create_item_blueprint(engine):
-    item_manager = ItemManager(engine)
-    item_tag_manager = ItemTagManager(engine)
+def create_item_blueprint(engine, item_error_codes, item_tag_error_codes, vdb_client):
+    item_manager = ItemManager(engine, item_error_codes, vdb_client)
+    item_tag_manager = ItemTagManager(engine, item_tag_error_codes)
 
     item_bp = Blueprint("item_bp", __name__)
 
@@ -60,6 +60,5 @@ def create_item_blueprint(engine):
     def search_by_tags():
         #TODO: Make function for this in item_manager, needs offset, limit, etc.
         pass
-        
-
-
+    
+    return item_bp

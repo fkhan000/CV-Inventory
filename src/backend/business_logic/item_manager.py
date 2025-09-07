@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from database.models import Item
-from manager import Manager
+from .manager import Manager
 from pymilvus import MilvusClient, Collection
 from services.embedding_model import EmbeddingModel
 from datetime import datetime, timezone

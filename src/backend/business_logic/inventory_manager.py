@@ -1,5 +1,5 @@
 from database.models import Inventory
-from manager import Manager
+from .manager import Manager
 
 class InventoryManager(Manager):
 

@@ -1,5 +1,5 @@
 from database.models import ItemTag
-from manager import Manager
+from .manager import Manager
 
 class ItemTagManager(Manager):
 

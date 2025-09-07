@@ -1,0 +1,6 @@
+{
+    "NotFound": 5001,
+    "IntegrityError": 5002,
+    "DatabaseError": 5003,
+    "AlreadyExists": 5004
+}

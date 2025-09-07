@@ -2,8 +2,8 @@ from flask import Blueprint, request, jsonify
 from flask_cors import cross_origin
 from business_logic.user_manager import UserManager
 
-def create_user_blueprint(engine):
-    user_manager = UserManager(engine)
+def create_user_blueprint(engine, error_codes):
+    user_manager = UserManager(engine, error_codes)
 
     user_bp = Blueprint("user_bp", __name__)
 
@@ -55,3 +55,5 @@ def create_user_blueprint(engine):
             return jsonify({
                 "message": "Invalid Argument"
             }), 400
+    
+    return user_bp

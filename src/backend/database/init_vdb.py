@@ -4,6 +4,7 @@ from pymilvus import (
     CollectionSchema,
     DataType,
     Collection,
+    connections
 )
 import os, json
 
@@ -13,7 +14,7 @@ class VDB_Loader:
     def __init__(self):
         self.db_client = MilvusClient(uri="http://localhost:19530", token="root:Milvus")
 
-        schema_file = os.path.join("..", "..", "config", "vbd_schema.json")
+        schema_file = os.path.join("..", "..", "..", "config", "vdb_schema.json")
         with open(schema_file) as f:
             self.schema = json.load(f)
         
@@ -38,6 +39,10 @@ class VDB_Loader:
 
         fields = [FieldSchema(**field) for field in field_args]
 
+        connections.connect(
+            alias="default",
+            host="127.0.0.1",
+            port="19530")
         schema = CollectionSchema(fields, description)
         collection = Collection(name=collection_name, schema=schema)
 

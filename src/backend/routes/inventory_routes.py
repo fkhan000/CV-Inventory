@@ -1,11 +1,10 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import cross_origin
 from business_logic.inventory_manager import InventoryManager
-from database.models import Inventory
 
-def create_inventory_blueprint(engine):
-    inventory_manager = InventoryManager(engine)
+def create_inventory_blueprint(engine, error_codes):
 
+    inventory_manager = InventoryManager(engine, error_codes)
     inventory_bp = Blueprint("inventory_bp", __name__)
 
     @inventory_bp.route("/api/create_inventory", methods=["POST"])
@@ -21,3 +20,5 @@ def create_inventory_blueprint(engine):
         user_id = request.args.get("user_id")
         inventory_manager.fetch({"user_id":user_id})
         return inventory_manager
+
+    return inventory_bp

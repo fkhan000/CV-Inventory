@@ -1,5 +1,5 @@
 from database.models import Tag
-from manager import Manager
+from .manager import Manager
 
 class TagManager(Manager):
 

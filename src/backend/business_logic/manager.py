@@ -28,7 +28,7 @@ class Manager(Generic[T]):
                     column_name = e.orig.diag.column_name
                     raise Exception(
                         f"A {column_name} with that {constraint_name} already exists!",
-                        self.error_codes[f"{column_name}AlreadyExists"]
+                        self.error_codes[f"AlreadyExists"]
                     ) from e
                 else:
                     raise Exception("An integrity error occurred.", 
@@ -65,7 +65,7 @@ class Manager(Generic[T]):
         if result is None:
             raise Exception(
                 f"No record found in {self.model.__name__} with {filters}",
-                self.error_codes[f"{self.model.__name__}NotFound"]
+                self.error_codes[f"NotFound"]
             )
         if isinstance(result, list):
             result = [object_as_dict(re) for re in result]
