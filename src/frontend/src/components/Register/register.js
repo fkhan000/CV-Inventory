@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./register.css";
+import {registerUser, login} from "../../services/userApi";
 
 export function Register() {
   const [formData, setFormData] = useState({
@@ -43,15 +44,38 @@ export function Register() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validate();
     setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
-      alert("Registered successfully!");
+    if (Object.keys(validationErrors).length > 0) return;
+
+    try {
+      const response = await registerUser(formData.name, formData.email);
+
+      if (response.status === 200) {
+        try {
+          const user = await login(formData.email);
+          localStorage.setItem("user", JSON.stringify(user));
+
+          window.location.href = "/dashboard";
+        } catch (err) {
+          console.error("Login error:", err);
+          alert("Error logging in. Please try again later.");
+        }
+      } else if (response.status === 5004) {
+        alert("Username already taken. Please try again.");
+      } else {
+        alert("Error registering. Please try again.");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      alert("Error registering. Please try again.");
     }
   };
+
 
   return (
     <div className="register-container">
